@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/styles.css" />
+    <title>Unibot</title>
+  </head>
+  <body>
+    <h2>UniBot</h2>
+
+    <div id="chatbox"></div>
+
+    <input type="text" id="userInput" placeholder="Ask a question..." />
+    <button onclick="sendMessage()">Send</button>
+  </body>
+
+  <script>
+    function sendMessage() {
+      let input = document.getElementById("userInput").value;
+
+      fetch("/get", {
+        method: "POST",
+        body: new URLSearchParams({ msg: input }),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("chatbox").innerHTML +=
+            "<p><b>You:</b> " + input + "</p>";
+          document.getElementById("chatbox").innerHTML +=
+            "<p><b>Bot:</b> " + data + "</p>";
+        });
+    }
+  </script>
+</html>
